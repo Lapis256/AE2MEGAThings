@@ -162,7 +162,7 @@ val modDependencies = buildDeps(
     ModDep("minecraft", minecraftVersion),
     ModDep("kotlinforforge", kffVersion),
     ModDep("ae2", extractVersionSegments(libs.versions.ae2)),
-    ModDep("megacells", "2.1"),
+    ModDep("megacells", "2.1", ordering = Order.AFTER),
     ModDep("ae2things", "1.2"),
     ModDep("appmek", "1.4", mandatory = false),
 )

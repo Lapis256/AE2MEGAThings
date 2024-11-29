@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "ae2_mega_things:mega_fluid_disk_housing"
+    },
+    {
+      "item": "megacells:cell_component_1m"
+    }
+  ],
+  "result": {
+    "item": "ae2_mega_things:fluid_disk_drive_1m"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "appmek"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shapeless",
+        "category": "misc",
+        "ingredients": [
+          {
+            "item": "ae2_mega_things:chemical_disk_housing"
+          },
+          {
+            "item": "ae2:cell_component_64k"
+          }
+        ],
+        "result": {
+          "item": "ae2_mega_things:chemical_disk_drive_64k"
+        }
+      }
+    }
+  ]
+}

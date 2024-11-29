@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "megacells:cell_component_256m"
+    },
+    "m": {
+      "item": "megacells:mega_item_cell_housing"
+    },
+    "n": {
+      "tag": "forge:ingots/netherite"
+    },
+    "q": {
+      "item": "ae2:quartz_vibrant_glass"
+    },
+    "r": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "qrq",
+    "rcr",
+    "nmn"
+  ],
+  "result": {
+    "item": "ae2_mega_things:item_disk_drive_256m"
+  },
+  "show_notification": true
+}

@@ -6,7 +6,6 @@ import io.github.projectet.ae2things.storage.DISKCellInventory
 import io.github.projectet.ae2things.storage.IDISKCellItem
 import io.github.projectet.ae2things.util.StorageManager
 import net.minecraft.world.item.ItemStack
-import org.jetbrains.annotations.Nullable
 
 
 class AE2MTDISKCellInventory(cellType: IDISKCellItem, private val stack: ItemStack, container: ISaveProvider?, storageManager: StorageManager?) :

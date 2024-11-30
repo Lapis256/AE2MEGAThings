@@ -17,7 +17,7 @@ class AE2MTItemModelProvider(output: PackOutput, helper: ExistingFileHelper) : I
     private val cellLed: ResourceLocation = AppEng.makeId("item/storage_cell_led")
 
     init {
-        helper.trackGenerated(cellLed, TEXTURE);
+        helper.trackGenerated(cellLed, TEXTURE)
     }
 
     override fun registerModels() {

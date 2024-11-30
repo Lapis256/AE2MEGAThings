@@ -17,7 +17,7 @@ object AE2MEGAThingsDataGenerator {
         val generator = event.generator
         val output = generator.packOutput
         val existingFileHelper = event.existingFileHelper
-        val lookupProvider = event.lookupProvider;
+        val lookupProvider = event.lookupProvider
 
         generator.addProvider(event.includeClient(), AE2MTLanguageProvider(output))
         generator.addProvider(event.includeClient(), AE2MTItemModelProvider(output, existingFileHelper))

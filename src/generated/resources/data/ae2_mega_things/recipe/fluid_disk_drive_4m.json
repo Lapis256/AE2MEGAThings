@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "megacells:cell_component_4m"
+    },
+    "m": {
+      "item": "megacells:mega_fluid_cell_housing"
+    },
+    "n": {
+      "tag": "c:ingots/netherite"
+    },
+    "q": {
+      "item": "ae2:quartz_vibrant_glass"
+    },
+    "r": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "qrq",
+    "rcr",
+    "nmn"
+  ],
+  "result": {
+    "count": 1,
+    "id": "ae2_mega_things:fluid_disk_drive_4m"
+  }
+}

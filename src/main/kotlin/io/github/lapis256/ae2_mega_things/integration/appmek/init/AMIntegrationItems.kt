@@ -33,6 +33,6 @@ object AMIntegrationItems {
         // NO-OP
     }
 
-    private fun chemicalDrive(tier: StorageTier) = drive("ME Chemical", "chemical", tier, CHEMICAL_DISK_HOUSING, ::ChemicalDISKDrive)
-    private fun megaChemicalDrive(tier: StorageTier) = drive("MEGA Chemical", "chemical", tier, MEGA_CHEMICAL_DISK_HOUSING, ::ChemicalDISKDrive)
+    private fun chemicalDrive(tier: StorageTier) = drive("chemical", tier, CHEMICAL_DISK_HOUSING, ::ChemicalDISKDrive)
+    private fun megaChemicalDrive(tier: StorageTier) = drive("chemical", tier, MEGA_CHEMICAL_DISK_HOUSING, ::ChemicalDISKDrive)
 }

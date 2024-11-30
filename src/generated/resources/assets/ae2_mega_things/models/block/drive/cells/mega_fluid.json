@@ -1,6 +1,0 @@
-{
-  "parent": "ae2:block/drive/drive_cell",
-  "textures": {
-    "cell": "ae2_mega_things:block/drive/cells/mega_fluid"
-  }
-}

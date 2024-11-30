@@ -7,9 +7,9 @@ import io.github.lapis256.ae2_mega_things.item.AbstractDISKDrive
 import io.github.lapis256.ae2_mega_things.storage.AE2MTDISKCellHandler
 import io.github.projectet.ae2things.item.DISKDrive
 import io.github.projectet.ae2things.storage.DISKCellHandler
+import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.world.level.ItemLike
-import net.minecraftforge.registries.ForgeRegistries
 
 
 object Utils {
@@ -30,8 +30,8 @@ object Utils {
     }
 
     @JvmStatic
-    fun getItemId(item: ItemLike) = ForgeRegistries.ITEMS.getKey(item.asItem())
+    fun getItemId(item: ItemLike) = BuiltInRegistries.ITEM.getKey(item.asItem())
 
     @JvmStatic
-    fun getItem(rl: ResourceLocation) = ForgeRegistries.ITEMS.getValue(rl)
+    fun getItem(rl: ResourceLocation) = BuiltInRegistries.ITEM.get(rl)
 }

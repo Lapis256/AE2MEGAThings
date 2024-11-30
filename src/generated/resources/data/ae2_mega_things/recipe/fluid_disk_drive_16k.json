@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "ae2:cell_component_16k"
+    },
+    "m": {
+      "item": "ae2:fluid_cell_housing"
+    },
+    "n": {
+      "tag": "c:ingots/netherite"
+    },
+    "q": {
+      "item": "ae2:quartz_vibrant_glass"
+    },
+    "r": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "qrq",
+    "rcr",
+    "nmn"
+  ],
+  "result": {
+    "count": 1,
+    "id": "ae2_mega_things:fluid_disk_drive_16k"
+  }
+}

@@ -1,47 +1,35 @@
 [versions]
-plugin_kotlin = "2.0.0"
-plugin_mixin = "0.7.+"
-plugin_forge = "6.0.+"
-plugin_parchmentmc = "1.+"
+plugin_neoforge = "1.0.+"
+plugin_kotlin = "2.0.21"
 
 
-minecraft = "1.20.1"
-minecraftForge = "1.20.1-47.3.7"
-kotlinForForge = "4.11.0"
-forge = "47.3.7"
-parchmentmc = "2023.09.03"
-mixin = "0.8.5"
-mixinExtras = "0.5.0-beta.4"
+minecraft = "1.21.1"
+neoforge = "21.1.77"
+kotlinForForge = "5.6.0"
+parchmentmc = "2024.11.10"
 
-jei = "15.12.3.55"
-ae2 = "15.2.13"
-mekanism = "1.20.1-10.4.9.61"
-appmek = "4842281"
-megacells = "5320730"
-ae2things = "4616683"
-clothConfig = "11.1.106"
+jei = "19.21.0.247"
+ae2 = "5729094"
+mekanism = "1.21.1-10.7.7.64"
+appmek = "5664061"
+megacells = "5920216"
+ae2things = "5637783"
+clothConfig = "15.0.140"
 
 
 [libraries]
-minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
-minecraftForge = { module = "net.minecraftforge:forge", version.ref = "minecraftForge" }
-kotlinForForge = { module = "thedarkcolour:kotlinforforge", version.ref = "kotlinForForge" }
-mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
-mixinExtrasCommon = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixinExtras" }
-mixinExtrasForge = { module = "io.github.llamalad7:mixinextras-forge", version.ref = "mixinExtras" }
+kotlinForForge = { module = "thedarkcolour:kotlinforforge-neoforge", version.ref = "kotlinForForge" }
 
-jei = { module = "mezz.jei:jei-1.20.1-forge", version.ref = "jei" }
-ae2 = { module = "appeng:appliedenergistics2-forge", version.ref = "ae2" }
+jei = { module = "mezz.jei:jei-1.21.1-neoforge", version.ref = "jei" }
+ae2 = { module = "curse.maven:applied-energistics-2-223794", version.ref = "ae2" }
 mekanism = { module = "mekanism:Mekanism", version.ref = "mekanism" }
 appmek = { module = "curse.maven:applied-mekanistics-574300", version.ref = "appmek" }
 megacells = { module = "curse.maven:mega-cells-622112", version.ref = "megacells" }
 ae2things = { module = "curse.maven:ae2-things-forge-609977", version.ref = "ae2things" }
-clothConfig = { module = "me.shedaniel.cloth:cloth-config-forge", version.ref = "clothConfig" }
+clothConfig = { module = "me.shedaniel.cloth:cloth-config-neoforge", version.ref = "clothConfig" }
 
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "plugin_kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "plugin_kotlin" }
-mixin = { id = "org.spongepowered.mixin", version.ref = "plugin_mixin" }
-forge = { id = "net.minecraftforge.gradle", version.ref = "plugin_forge" }
-parchmentmc = { id = "org.parchmentmc.librarian.forgegradle", version.ref = "plugin_parchmentmc" }
+neoforge = { id = "net.neoforged.moddev", version.ref = "plugin_neoforge" }

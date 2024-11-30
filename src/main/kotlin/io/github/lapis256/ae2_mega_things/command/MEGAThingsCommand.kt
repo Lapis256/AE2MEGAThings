@@ -8,13 +8,10 @@ import io.github.lapis256.ae2_mega_things.util.getDisk
 import io.github.lapis256.ae2_mega_things.util.getUuid
 import io.github.projectet.ae2things.AE2Things
 import io.github.projectet.ae2things.item.AETItems
-import io.github.projectet.ae2things.storage.DISKCellInventory
 import io.github.projectet.ae2things.storage.IDISKCellItem
-import io.github.projectet.ae2things.util.Constants
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.Commands
 import net.minecraft.commands.arguments.UuidArgument
-import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
 import java.util.*
@@ -35,11 +32,13 @@ object MEGAThingsCommand {
 
     private val recoverArg: LiteralCommandNode<CommandSourceStack> = Commands.literal(AE2Things.MOD_ID).then(
         Commands.literal("recover").requires { source -> source.hasPermission(2) }
-            .then(Commands.argument("uuid", UuidArgument.uuid())
-                .executes { ctx -> spawnDrive(ctx, ctx.getUuid("uuid")) }
-                .then(Commands.argument("disk", DISKCellItemArgument)
-                    .executes { ctx -> spawnDrive(ctx, ctx.getUuid("uuid"), ctx.getDisk("disk")) }
-                )
+            .then(
+                Commands.argument("uuid", UuidArgument.uuid())
+                    .executes { ctx -> spawnDrive(ctx, ctx.getUuid("uuid")) }
+                    .then(
+                        Commands.argument("disk", DISKCellItemArgument)
+                            .executes { ctx -> spawnDrive(ctx, ctx.getUuid("uuid"), ctx.getDisk("disk")) }
+                    )
             )
     ).build()
 
@@ -51,19 +50,19 @@ object MEGAThingsCommand {
     private fun spawnDrive(context: CommandContext<CommandSourceStack>, uuid: UUID, disk: IDISKCellItem): Int {
         val player = context.source.playerOrException
 
-        if (!AE2Things.STORAGE_INSTANCE.hasUUID(uuid)) {
-            context.source.sendFailure(Component.translatable("command.ae2things.recover_fail", uuid))
-            return 1
-        }
+        val storageManager = AE2Things.currentStorageManager()
+            ?.takeIf { it.hasUUID(uuid) }
+            ?: run {
+                context.source.sendFailure(Component.translatable("command.ae2things.recover_fail", uuid.toString()))
+                return 1
+            }
 
-        val nbt = CompoundTag().also {
-            it.putUUID(Constants.DISKUUID, uuid)
-            it.putLong(DISKCellInventory.ITEM_COUNT_TAG, AE2Things.STORAGE_INSTANCE.getOrCreateDisk(uuid).itemCount)
-        }
-        val stack = ItemStack(disk).also { it.tag = nbt }
-        player.addItem(stack)
+        player.addItem(ItemStack(disk).also {
+            it.set(AE2Things.DATA_DISK_ID, uuid)
+            it.set(AE2Things.DATA_DISK_ITEM_COUNT, storageManager.getOrCreateDisk(uuid).itemCount)
+        })
 
-        context.source.sendSuccess({ Component.translatable("command.ae2things.recover_success", player.getDisplayName(), uuid) }, true)
+        context.source.sendSuccess({ Component.translatable("command.ae2things.recover_success", player.displayName, uuid.toString()) }, true)
         return 0
     }
 }

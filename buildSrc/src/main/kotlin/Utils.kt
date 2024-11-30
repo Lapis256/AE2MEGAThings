@@ -11,19 +11,27 @@ enum class Side {
     CLIENT, SERVER, BOTH;
 }
 
+enum class DisplayTest {
+    MATCH_VERSION, IGNORE_SERVER_VERSION, IGNORE_ALL_VERSION, NONE;
+}
+
+enum class DependencyType {
+    REQUIRED, OPTIONAL, INCOMPATIBLE, DISCOURAGED;
+}
+
 data class ModDep(
-    val id: String, val version: String, val mandatory: Boolean = true, val ordering: Order = Order.NONE, val side: Side = Side.BOTH
+    val id: String, val version: String, val type: DependencyType = DependencyType.REQUIRED, val ordering: Order = Order.NONE, val side: Side = Side.BOTH
 )
 
 fun buildDeps(
     vararg deps: ModDep
 ): String {
-    return deps.joinToString(separator = "\n") { (id, version, mandatory, ordering, side) ->
+    return deps.joinToString(separator = "\n") { (id, version, type, ordering, side) ->
         """
             [[dependencies.${Constants.Mod.id}]]
             modId = "$id"
             versionRange = "[$version,)"
-            mandatory = $mandatory
+            type = "$type"
             ordering = "$ordering"
             side = "$side"
         """.trimIndent()

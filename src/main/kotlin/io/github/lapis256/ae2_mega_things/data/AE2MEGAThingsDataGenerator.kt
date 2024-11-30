@@ -5,27 +5,24 @@ import io.github.lapis256.ae2_mega_things.data.provider.AE2MTBlockModelProvider
 import io.github.lapis256.ae2_mega_things.data.provider.AE2MTItemModelProvider
 import io.github.lapis256.ae2_mega_things.data.provider.AE2MTLanguageProvider
 import io.github.lapis256.ae2_mega_things.data.provider.AE2MTRecipeProvider
-import net.minecraftforge.api.distmarker.Dist
-import net.minecraftforge.data.event.GatherDataEvent
-import net.minecraftforge.fml.common.Mod
-import thedarkcolour.kotlinforforge.forge.MOD_BUS
+import net.neoforged.bus.api.SubscribeEvent
+import net.neoforged.fml.common.EventBusSubscriber
+import net.neoforged.neoforge.data.event.GatherDataEvent
 
 
-@Mod.EventBusSubscriber(modid = AE2MEGAThings.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = [Dist.CLIENT])
+@EventBusSubscriber(modid = AE2MEGAThings.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 object AE2MEGAThingsDataGenerator {
-    init {
-        MOD_BUS.addListener(::onGatherData)
-    }
-
+    @SubscribeEvent
     private fun onGatherData(event: GatherDataEvent) {
         val generator = event.generator
         val output = generator.packOutput
         val existingFileHelper = event.existingFileHelper
+        val lookupProvider = event.lookupProvider;
 
         generator.addProvider(event.includeClient(), AE2MTLanguageProvider(output))
         generator.addProvider(event.includeClient(), AE2MTItemModelProvider(output, existingFileHelper))
         generator.addProvider(event.includeClient(), AE2MTBlockModelProvider(output, existingFileHelper))
 
-        generator.addProvider(event.includeServer(), AE2MTRecipeProvider(output))
+        generator.addProvider(event.includeServer(), AE2MTRecipeProvider(output, lookupProvider))
     }
 }

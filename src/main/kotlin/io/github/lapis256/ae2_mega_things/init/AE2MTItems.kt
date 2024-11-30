@@ -4,26 +4,26 @@ import appeng.api.upgrades.Upgrades
 import appeng.core.definitions.AEItems
 import appeng.core.definitions.ItemDefinition
 import appeng.items.storage.StorageTier
-import com.google.common.base.Supplier
 import gripe._90.megacells.definition.MEGAItems
 import io.github.lapis256.ae2_mega_things.AE2MEGAThings
 import io.github.lapis256.ae2_mega_things.item.AbstractDISKDrive
 import io.github.lapis256.ae2_mega_things.item.DISKHousing
 import io.github.lapis256.ae2_mega_things.item.FluidDISKDrive
 import io.github.lapis256.ae2_mega_things.item.ItemDISKDrive
+import io.github.lapis256.ae2_mega_things.util.isMEGA
 import io.github.lapis256.ae2_mega_things.util.kilobytes
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
-import net.minecraftforge.registries.DeferredRegister
-import net.minecraftforge.registries.ForgeRegistries
-import thedarkcolour.kotlinforforge.forge.registerObject
+import net.neoforged.neoforge.registries.DeferredRegister
 
 
 typealias MEGADISKDriveFactory = (component: ItemLike, housing: ItemLike, kilobyte: Int, idleDrain: Double) -> AbstractDISKDrive
 
 object AE2MTItems {
+    val REGISTRY = DeferredRegister.createItems(AE2MEGAThings.MOD_ID)
+
     val ITEMS = mutableSetOf<ItemDefinition<*>>()
-    val DISK_DRIVES = mutableSetOf<AbstractDISKDrive>()
+    val DISK_DRIVES = mutableSetOf<DISKDriveDefinition>()
 
 
     val MEGA_ITEM_DISK_HOUSING = housing("MEGA Item", "mega_item")
@@ -61,7 +61,7 @@ object AE2MTItems {
 
     fun initUpgrades() {
         for (drive in DISK_DRIVES) {
-            if (drive.isSupportsFuzzyMode) {
+            if (drive.asItem().isSupportsFuzzyMode) {
                 Upgrades.add(AEItems.FUZZY_CARD, drive, 1)
             }
             Upgrades.add(AEItems.INVERTER_CARD, drive, 1)
@@ -69,22 +69,24 @@ object AE2MTItems {
     }
 
     private fun <T : Item> register(englishName: String, path: String, factory: () -> T): ItemDefinition<T> {
-        return factory().let { item ->
-            AE2MTCreativeTab.add(item)
-            val def: ItemDefinition<T> = ItemDefinition(englishName, AE2MEGAThings.rl(path), item)
-            ITEMS.add(def)
-            def
-        }
+        return ItemDefinition(englishName, REGISTRY.registerItem(path) { factory() }).also(ITEMS::add).also(AE2MTCreativeTab::add)
     }
 
     fun housing(prefix: String, idPrefix: String) = register("$prefix DISK Housing", "${idPrefix}_disk_housing") { DISKHousing() }
 
-    fun drive(typeName: String, idPrefix: String, tier: StorageTier, housing: ItemLike, factory: MEGADISKDriveFactory) =
-        register("${tier.namePrefix.replace("m", "M")} $typeName DISK Drive", "${idPrefix}_disk_drive_${tier.namePrefix}") {
-            factory(tier.componentSupplier.get(), housing, tier.kilobytes(), tier.idleDrain).also { DISK_DRIVES.add(it) }
-        }
+    fun drive(typeKey: String, tier: StorageTier, housing: ItemLike, factory: MEGADISKDriveFactory) =
+        register(makeDriveName(tier, typeKey), "${typeKey}_disk_drive_${tier.namePrefix}") {
+            factory(tier.componentSupplier.get(), housing, tier.kilobytes(), tier.idleDrain)
+        }.also { DISK_DRIVES.add(DISKDriveDefinition(it, typeKey, tier)) }
 
-    private fun megaItemDrive(tier: StorageTier) = drive("MEGA Item", "item", tier, MEGA_ITEM_DISK_HOUSING, ::ItemDISKDrive)
-    private fun fluidDrive(tier: StorageTier) = drive("ME Fluid", "fluid", tier, FLUID_DISK_HOUSING, ::FluidDISKDrive)
-    private fun megaFluidDrive(tier: StorageTier) = drive("MEGA Fluid", "fluid", tier, MEGA_FLUID_DISK_HOUSING, ::FluidDISKDrive)
+    private fun makeDriveName(tier: StorageTier, typeKey: String) =
+        "${tier.namePrefix.replace("m", "M")} ${if (tier.isMEGA) "MEGA" else "ME"} ${typeKey.replaceFirstChar(Char::titlecase)} DISK Drive"
+
+    private fun megaItemDrive(tier: StorageTier) = drive("item", tier, MEGA_ITEM_DISK_HOUSING, ::ItemDISKDrive)
+    private fun fluidDrive(tier: StorageTier) = drive("fluid", tier, FLUID_DISK_HOUSING, ::FluidDISKDrive)
+    private fun megaFluidDrive(tier: StorageTier) = drive("fluid", tier, MEGA_FLUID_DISK_HOUSING, ::FluidDISKDrive)
+
+    data class DISKDriveDefinition(val item: ItemDefinition<AbstractDISKDrive>, val keyType: String, val tier: StorageTier) : ItemLike by item {
+        override fun asItem() = item.asItem()
+    }
 }

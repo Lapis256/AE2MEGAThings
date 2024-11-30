@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "m": {
+      "item": "megacells:mega_fluid_cell_housing"
+    },
+    "n": {
+      "tag": "c:ingots/netherite"
+    },
+    "q": {
+      "item": "ae2:quartz_vibrant_glass"
+    },
+    "r": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "qrq",
+    "r r",
+    "nmn"
+  ],
+  "result": {
+    "count": 1,
+    "id": "ae2_mega_things:mega_fluid_disk_housing"
+  }
+}

@@ -8,3 +8,6 @@ fun StorageTier.kilobytes() = when (index) {
     in 6..10 -> (1 shl (2 * (index - 6))) * 1000
     else -> throw IllegalArgumentException("Tier out of range")
 }
+
+val StorageTier.isMEGA
+    get() = index in 6..10

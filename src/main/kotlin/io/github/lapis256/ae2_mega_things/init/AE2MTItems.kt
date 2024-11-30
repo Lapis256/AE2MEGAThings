@@ -4,7 +4,6 @@ import appeng.api.upgrades.Upgrades
 import appeng.core.definitions.AEItems
 import appeng.core.definitions.ItemDefinition
 import appeng.items.storage.StorageTier
-import com.google.common.base.Supplier
 import gripe._90.megacells.definition.MEGAItems
 import io.github.lapis256.ae2_mega_things.AE2MEGAThings
 import io.github.lapis256.ae2_mega_things.item.AbstractDISKDrive
@@ -14,9 +13,6 @@ import io.github.lapis256.ae2_mega_things.item.ItemDISKDrive
 import io.github.lapis256.ae2_mega_things.util.kilobytes
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
-import net.minecraftforge.registries.DeferredRegister
-import net.minecraftforge.registries.ForgeRegistries
-import thedarkcolour.kotlinforforge.forge.registerObject
 
 
 typealias MEGADISKDriveFactory = (component: ItemLike, housing: ItemLike, kilobyte: Int, idleDrain: Double) -> AbstractDISKDrive

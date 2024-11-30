@@ -31,7 +31,7 @@ object DISKCellItemArgument : ArgumentType<ResourceLocation> {
             .toMap()
     }
 
-    private val DISK_DRIVE_NAMES = DISK_DRIVE_MAP.keys
+    private val DISK_DRIVE_NAMES by lazy { DISK_DRIVE_MAP.keys }
 
     @Throws(CommandSyntaxException::class)
     override fun parse(reader: StringReader): ResourceLocation {

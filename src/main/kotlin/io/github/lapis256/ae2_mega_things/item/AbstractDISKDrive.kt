@@ -3,7 +3,6 @@ package io.github.lapis256.ae2_mega_things.item
 import appeng.api.config.FuzzyMode
 import appeng.api.stacks.AEKey
 import appeng.api.stacks.AEKeyType
-import appeng.api.storage.cells.CellState
 import appeng.api.upgrades.IUpgradeInventory
 import appeng.api.upgrades.UpgradeInventories
 import appeng.hooks.AEToolItem

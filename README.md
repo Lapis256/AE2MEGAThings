@@ -1,7 +1,33 @@
 # AE2 MEGA Things
 
-This mod is an add-on for AE2 Things and MEGA Cells, introducing a variety of DISK Cells without type restrictions. It supports items, fluids, and
-chemicals, ranging from 1k to 256M.
+This mod is an add-on for AE2 Things and MEGA Cells, introducing a variety of DISK Cells without type restrictions.
+
+## Features
+
+### DISK Cells
+
+- **Item DISKs**:  
+  Storage capacities range from 1M to 256M, consuming 1 byte per item.
+
+
+- **Fluid DISKs**:  
+  Capacities range from 1k to 256M, consuming 1 byte per 1000mB.
+
+
+- **Chemical DISKs** (Integration with Applied Mekanistics):  
+  Adds DISKs for chemicals with capacities from 1k to 256M, consuming 1 byte per 1000mB.
+
+
+- **Common Characteristics**:  
+  All DISKs incur a storage loss of 24 bytes per 1kiB, similar to AE2 Things.
+
+### Command Enhancements
+
+This mod modifies the AE2 Things `/ae2things recover` command, introducing the following new feature:
+
+- You can specify the third argument to explicitly select the DISK used for recovery.
+
+---
 
 ## License
 

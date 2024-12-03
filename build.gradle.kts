@@ -202,8 +202,6 @@ tasks {
                 "FMLAT" to "accesstransformer.cfg",
             )
         }
-
-        finalizedBy("reobfJar")
     }
 
     named<Jar>("sourcesJar") {

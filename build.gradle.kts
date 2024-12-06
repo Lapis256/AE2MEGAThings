@@ -139,7 +139,6 @@ dependencies {
 
     runtimeOnly(deobf(libs.jei))
     runtimeOnly(deobf(variantOf(libs.mekanism, "all")))
-//    runtimeOnly(deobf(libs.clothConfig))
     if (loadAppMek) {
         runtimeOnly(deobf(libs.appmek))
     }

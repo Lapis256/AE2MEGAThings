@@ -19,11 +19,9 @@ mekanism = "1.18.2-10.2.5.465"
 appmek = "3968835"
 megacells = "4027408"
 ae2things = "4948360"
-clothConfig = "11.1.106"
 
 
 [libraries]
-minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 minecraftForge = { module = "net.minecraftforge:forge", version.ref = "minecraftForge" }
 kotlinForForge = { module = "thedarkcolour:kotlinforforge", version.ref = "kotlinForForge" }
 mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
@@ -36,7 +34,6 @@ mekanism = { module = "mekanism:Mekanism", version.ref = "mekanism" }
 appmek = { module = "curse.maven:applied-mekanistics-574300", version.ref = "appmek" }
 megacells = { module = "curse.maven:mega-cells-622112", version.ref = "megacells" }
 ae2things = { module = "curse.maven:ae2-things-forge-609977", version.ref = "ae2things" }
-clothConfig = { module = "me.shedaniel.cloth:cloth-config-forge", version.ref = "clothConfig" }
 
 
 [plugins]

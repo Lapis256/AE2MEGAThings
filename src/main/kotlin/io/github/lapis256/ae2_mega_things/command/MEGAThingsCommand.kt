@@ -15,7 +15,6 @@ import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.Commands
 import net.minecraft.commands.arguments.UuidArgument
 import net.minecraft.nbt.CompoundTag
-import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.TranslatableComponent
 import net.minecraft.world.item.ItemStack
 import java.util.*

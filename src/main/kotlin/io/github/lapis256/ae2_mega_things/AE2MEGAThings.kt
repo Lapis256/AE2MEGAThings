@@ -5,7 +5,6 @@ import appeng.api.storage.StorageCells
 import appeng.core.definitions.ItemDefinition
 import io.github.lapis256.ae2_mega_things.command.DISKCellItemArgument
 import io.github.lapis256.ae2_mega_things.command.MEGAThingsCommand
-import io.github.lapis256.ae2_mega_things.init.AE2MTCreativeTab
 import io.github.lapis256.ae2_mega_things.init.AE2MTItems
 import io.github.lapis256.ae2_mega_things.integration.appmek.AppMek
 import io.github.lapis256.ae2_mega_things.item.AbstractDISKDrive
@@ -58,7 +57,7 @@ object AE2MEGAThings {
 
     fun registerItem(event: RegistryEvent.Register<Item>) {
         AE2MTItems.ITEMS.forEach {
-            event.registry.register(it.asItem().apply { setRegistryName(it.id()) })
+            event.registry.register(it.asItem().apply { registryName = it.id() })
         }
     }
 

@@ -1,0 +1,45 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "ae2_mega_things:fluid_disk_drive_64k"
+    ]
+  },
+  "criteria": {
+    "has_cell_component_64k": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ae2:cell_component_64k"
+            ]
+          }
+        ]
+      }
+    },
+    "has_netherite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/netherite"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "ae2_mega_things:fluid_disk_drive_64k"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cell_component_64k",
+      "has_netherite",
+      "has_the_recipe"
+    ]
+  ]
+}

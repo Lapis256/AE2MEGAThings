@@ -13,8 +13,8 @@ import io.github.lapis256.ae2_mega_things.util.getId
 import io.github.projectet.ae2things.storage.IDISKCellItem
 import net.minecraft.commands.CommandSourceStack
 import net.minecraft.commands.SharedSuggestionProvider
-import net.minecraft.commands.synchronization.ArgumentTypeInfos
-import net.minecraft.commands.synchronization.SingletonArgumentInfo
+import net.minecraft.commands.synchronization.ArgumentTypes
+import net.minecraft.commands.synchronization.EmptyArgumentSerializer
 import net.minecraft.resources.ResourceLocation
 import net.minecraftforge.registries.ForgeRegistries
 import java.util.concurrent.CompletableFuture
@@ -47,6 +47,6 @@ object DISKCellItemArgument : ArgumentType<ResourceLocation> {
     }
 
     fun register() {
-        ArgumentTypeInfos.registerByClass(this.javaClass, SingletonArgumentInfo.contextFree { this })
+        ArgumentTypes.register("disk_drive", this.javaClass, EmptyArgumentSerializer { this })
     }
 }

@@ -4,14 +4,24 @@
     {
       "conditions": [
         {
-          "type": "forge:mod_loaded",
-          "modid": "appmek"
+          "modid": "appmek",
+          "type": "forge:mod_loaded"
         }
       ],
       "recipe": {
         "type": "minecraft:crafting_shaped",
-        "category": "misc",
+        "pattern": [
+          "qrq",
+          "rcr",
+          "nmn"
+        ],
         "key": {
+          "q": {
+            "item": "ae2:quartz_vibrant_glass"
+          },
+          "r": {
+            "tag": "forge:dusts/redstone"
+          },
           "c": {
             "item": "megacells:cell_component_1m"
           },
@@ -20,23 +30,11 @@
           },
           "n": {
             "tag": "forge:ingots/netherite"
-          },
-          "q": {
-            "item": "ae2:quartz_vibrant_glass"
-          },
-          "r": {
-            "tag": "forge:dusts/redstone"
           }
         },
-        "pattern": [
-          "qrq",
-          "rcr",
-          "nmn"
-        ],
         "result": {
           "item": "ae2_mega_things:chemical_disk_drive_1m"
-        },
-        "show_notification": true
+        }
       }
     }
   ]

@@ -1,0 +1,47 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "ae2_mega_things:fluid_disk_drive_4k_with_housing"
+    ]
+  },
+  "criteria": {
+    "has_cell_component_4k": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ae2:cell_component_4k"
+            ]
+          }
+        ]
+      }
+    },
+    "has_fluid_disk_housing": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ae2_mega_things:fluid_disk_housing"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "ae2_mega_things:fluid_disk_drive_4k_with_housing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cell_component_4k",
+      "has_fluid_disk_housing",
+      "has_the_recipe"
+    ]
+  ]
+}

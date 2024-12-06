@@ -6,12 +6,12 @@ import io.github.lapis256.ae2_mega_things.AE2MEGAThings
 import io.github.lapis256.ae2_mega_things.init.AE2MTItems
 import io.github.lapis256.ae2_mega_things.item.AbstractDISKDrive
 import io.github.lapis256.ae2_mega_things.item.DISKHousing
-import net.minecraft.data.PackOutput
+import net.minecraft.data.DataGenerator
 import net.minecraftforge.client.model.generators.ItemModelProvider
 import net.minecraftforge.common.data.ExistingFileHelper
 
 
-class AE2MTItemModelProvider(output: PackOutput, helper: ExistingFileHelper) : ItemModelProvider(output, AE2MEGAThings.MOD_ID, helper) {
+class AE2MTItemModelProvider(gen: DataGenerator, helper: ExistingFileHelper) : ItemModelProvider(gen, AE2MEGAThings.MOD_ID, helper) {
     private val parent = mcLoc("item/generated")
 
     override fun registerModels() {

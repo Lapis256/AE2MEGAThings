@@ -9,11 +9,13 @@ import appeng.hooks.AEToolItem
 import appeng.items.contents.CellConfig
 import appeng.util.ConfigInventory
 import appeng.util.InteractionUtil
+import io.github.lapis256.ae2_mega_things.init.AE2MTCreativeTab
 import io.github.lapis256.ae2_mega_things.init.AE2MTTexts
 import io.github.lapis256.ae2_mega_things.storage.AE2MTDISKCellHandler
 import io.github.projectet.ae2things.storage.IDISKCellItem
 import net.minecraft.ChatFormatting
 import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TextComponent
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.InteractionResultHolder
@@ -28,7 +30,7 @@ import net.minecraft.world.level.Level
 
 abstract class AbstractDISKDrive(
     private val keyType: AEKeyType, private val component: ItemLike, private val housing: ItemLike, kilobytes: Int, private val idleDrain: Double
-) : Item(Properties().stacksTo(1).fireResistant()), IDISKCellItem, AEToolItem {
+) : Item(Properties().stacksTo(1).fireResistant().tab(AE2MTCreativeTab)), IDISKCellItem, AEToolItem {
     private val bytes = kilobytes * 1000
 
     val isSupportsFuzzyMode = keyType.supportsFuzzyRangeSearch()
@@ -36,6 +38,7 @@ abstract class AbstractDISKDrive(
     override fun isBlackListed(cellItem: ItemStack, requestedAddition: AEKey) = false
     override fun getBytes(stack: ItemStack) = bytes
     override fun getIdleDrain() = idleDrain
+    override fun isEditable(stack: ItemStack) = true
 
     // Override isStorageCell to use AE2MTDISKCellInventory instead of DISKCellInventory.
     override fun isStorageCell(stack: ItemStack) = false
@@ -50,7 +53,7 @@ abstract class AbstractDISKDrive(
 
     override fun getFuzzyMode(stack: ItemStack): FuzzyMode {
         val mode = stack.getOrCreateTag().getString("FuzzyMode")
-        return FuzzyMode.entries.find { it.name == mode } ?: FuzzyMode.IGNORE_ALL
+        return FuzzyMode.values().find { it.name == mode } ?: FuzzyMode.IGNORE_ALL
     }
 
     override fun setFuzzyMode(stack: ItemStack, mode: FuzzyMode) {
@@ -59,7 +62,7 @@ abstract class AbstractDISKDrive(
 
     override fun appendHoverText(stack: ItemStack, level: Level?, tooltip: MutableList<Component>, isAdvanced: TooltipFlag) {
         tooltip.add(
-            Component.literal("Deep Item Storage disK - Storage for dummies").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
+            TextComponent("Deep Item Storage disK - Storage for dummies").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
         )
         AE2MTDISKCellHandler.addCellInformationToTooltip(stack, tooltip)
     }

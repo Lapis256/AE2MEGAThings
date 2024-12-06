@@ -1,24 +1,24 @@
 [versions]
-plugin_kotlin = "2.0.0"
+plugin_kotlin = "1.8.21"
 plugin_mixin = "0.7.+"
 plugin_forge = "6.0.+"
 plugin_parchmentmc = "1.+"
 
 
-minecraft = "1.20.1"
-minecraftForge = "1.20.1-47.3.7"
-kotlinForForge = "4.11.0"
-forge = "47.3.7"
-parchmentmc = "2023.09.03"
+minecraft = "1.18.2"
+minecraftForge = "1.18.2-40.2.0"
+kotlinForForge = "3.12.0"
+forge = " 40.2.0"
+parchmentmc = "2022.11.06"
 mixin = "0.8.5"
 mixinExtras = "0.5.0-beta.4"
 
-jei = "15.12.3.55"
-ae2 = "15.2.13"
-mekanism = "1.20.1-10.4.9.61"
-appmek = "4842281"
-megacells = "5320730"
-ae2things = "4616683"
+jei = "10.2.1.1009"
+ae2 = "11.7.6"
+mekanism = "1.18.2-10.2.5.465"
+appmek = "3968835"
+megacells = "4027408"
+ae2things = "4948360"
 clothConfig = "11.1.106"
 
 
@@ -30,7 +30,7 @@ mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
 mixinExtrasCommon = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixinExtras" }
 mixinExtrasForge = { module = "io.github.llamalad7:mixinextras-forge", version.ref = "mixinExtras" }
 
-jei = { module = "mezz.jei:jei-1.20.1-forge", version.ref = "jei" }
+jei = { module = "mezz.jei:jei-1.18.2-forge", version.ref = "jei" }
 ae2 = { module = "appeng:appliedenergistics2-forge", version.ref = "ae2" }
 mekanism = { module = "mekanism:Mekanism", version.ref = "mekanism" }
 appmek = { module = "curse.maven:applied-mekanistics-574300", version.ref = "appmek" }

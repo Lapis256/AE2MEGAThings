@@ -5,7 +5,7 @@ import io.github.lapis256.ae2_mega_things.AE2MEGAThings
 import io.github.lapis256.ae2_mega_things.init.AE2MTItems
 import io.github.lapis256.ae2_mega_things.integration.appmek.client.AppMekClient
 import net.minecraftforge.api.distmarker.Dist
-import net.minecraftforge.client.event.RegisterColorHandlersEvent
+import net.minecraftforge.client.event.ColorHandlerEvent
 import net.minecraftforge.fml.common.Mod
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
 
@@ -18,7 +18,7 @@ object AE2MEGAThingsClient {
         AppMekClient.initIntegration()
     }
 
-    private fun registerItemColors(event: RegisterColorHandlersEvent.Item) {
-        event.register(BasicStorageCell::getColor, *AE2MTItems.DISK_DRIVES.toTypedArray())
+    private fun registerItemColors(event: ColorHandlerEvent.Item) {
+        event.itemColors.register(BasicStorageCell::getColor, *AE2MTItems.DISK_DRIVES.toTypedArray())
     }
 }

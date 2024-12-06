@@ -13,5 +13,5 @@ object AE2MTTexts {
     }
 
 
-    val entries: List<LocalizationEnum> = Chat.entries
+    val entries: List<LocalizationEnum> = Chat.values().toList()
 }

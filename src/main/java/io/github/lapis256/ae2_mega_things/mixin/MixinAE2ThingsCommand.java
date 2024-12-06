@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(value = Command.class, remap = false)
 public class MixinAE2ThingsCommand {
-    @ModifyConstant(method = "lambda$help$3", constant = @Constant(ordinal = 0))
+    @ModifyConstant(method = "help", constant = @Constant(ordinal = 1))
     private static String modifyHelpCommand(String original) {
         return original.replace("<UUID>", "<UUID> [DISK]") + " You can change the disk to be spawned by the given DISK.";
     }

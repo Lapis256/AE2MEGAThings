@@ -6,8 +6,8 @@ import io.github.lapis256.ae2_mega_things.data.provider.AE2MTItemModelProvider
 import io.github.lapis256.ae2_mega_things.data.provider.AE2MTLanguageProvider
 import io.github.lapis256.ae2_mega_things.data.provider.AE2MTRecipeProvider
 import net.minecraftforge.api.distmarker.Dist
-import net.minecraftforge.data.event.GatherDataEvent
 import net.minecraftforge.fml.common.Mod
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
 
 
@@ -19,13 +19,12 @@ object AE2MEGAThingsDataGenerator {
 
     private fun onGatherData(event: GatherDataEvent) {
         val generator = event.generator
-        val output = generator.packOutput
         val existingFileHelper = event.existingFileHelper
 
-        generator.addProvider(event.includeClient(), AE2MTLanguageProvider(output))
-        generator.addProvider(event.includeClient(), AE2MTItemModelProvider(output, existingFileHelper))
-        generator.addProvider(event.includeClient(), AE2MTBlockModelProvider(output, existingFileHelper))
+        generator.addProvider(AE2MTLanguageProvider(generator))
+        generator.addProvider(AE2MTItemModelProvider(generator, existingFileHelper))
+        generator.addProvider(AE2MTBlockModelProvider(generator, existingFileHelper))
 
-        generator.addProvider(event.includeServer(), AE2MTRecipeProvider(output))
+        generator.addProvider(AE2MTRecipeProvider(generator))
     }
 }

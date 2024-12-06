@@ -16,6 +16,7 @@ import net.minecraft.commands.Commands
 import net.minecraft.commands.arguments.UuidArgument
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TranslatableComponent
 import net.minecraft.world.item.ItemStack
 import java.util.*
 
@@ -52,7 +53,7 @@ object MEGAThingsCommand {
         val player = context.source.playerOrException
 
         if (!AE2Things.STORAGE_INSTANCE.hasUUID(uuid)) {
-            context.source.sendFailure(Component.translatable("command.ae2things.recover_fail", uuid))
+            context.source.sendFailure(TranslatableComponent("command.ae2things.recover_fail", uuid))
             return 1
         }
 
@@ -63,7 +64,7 @@ object MEGAThingsCommand {
         val stack = ItemStack(disk).also { it.tag = nbt }
         player.addItem(stack)
 
-        context.source.sendSuccess({ Component.translatable("command.ae2things.recover_success", player.getDisplayName(), uuid) }, true)
+        context.source.sendSuccess(TranslatableComponent("command.ae2things.recover_success", player.getDisplayName(), uuid), true)
         return 0
     }
 }

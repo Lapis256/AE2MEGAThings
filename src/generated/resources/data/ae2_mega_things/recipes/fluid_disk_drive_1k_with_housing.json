@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "category": "misc",
   "ingredients": [
     {
       "item": "ae2_mega_things:fluid_disk_housing"

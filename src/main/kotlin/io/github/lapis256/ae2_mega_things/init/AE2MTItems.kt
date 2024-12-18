@@ -10,6 +10,7 @@ import io.github.lapis256.ae2_mega_things.item.AbstractDISKDrive
 import io.github.lapis256.ae2_mega_things.item.DISKHousing
 import io.github.lapis256.ae2_mega_things.item.FluidDISKDrive
 import io.github.lapis256.ae2_mega_things.item.ItemDISKDrive
+import io.github.lapis256.ae2_mega_things.util.componentItem
 import io.github.lapis256.ae2_mega_things.util.kilobytes
 import net.minecraft.world.item.Item
 import net.minecraft.world.level.ItemLike
@@ -77,7 +78,7 @@ object AE2MTItems {
 
     fun drive(typeName: String, idPrefix: String, tier: StorageTier, housing: ItemLike, factory: MEGADISKDriveFactory) =
         register("${tier.namePrefix.replace("m", "M")} $typeName DISK Drive", "${idPrefix}_disk_drive_${tier.namePrefix}") {
-            factory(tier.componentSupplier.get(), housing, tier.kilobytes(), tier.idleDrain).also { DISK_DRIVES.add(it) }
+            factory(tier.componentItem(), housing, tier.kilobytes(), tier.idleDrain).also { DISK_DRIVES.add(it) }
         }
 
     private fun megaItemDrive(tier: StorageTier) = drive("MEGA Item", "item", tier, MEGA_ITEM_DISK_HOUSING, ::ItemDISKDrive)

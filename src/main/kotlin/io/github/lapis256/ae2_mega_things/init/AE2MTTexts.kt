@@ -5,7 +5,7 @@ import appeng.core.localization.LocalizationEnum
 
 object AE2MTTexts {
     enum class Chat(private val englishText: String) : LocalizationEnum {
-        OnlyEmptyDISKsCanBeDisassembled("Only empty DISKs can be disassembled."),
+        OnlyEmptyDISKsCanBeDisassembled("Only empty DISK drives can be disassembled."),
         UnknownDISKDrive("Unknown DISK Drive '[%s]'");
 
         override fun getEnglishText() = englishText

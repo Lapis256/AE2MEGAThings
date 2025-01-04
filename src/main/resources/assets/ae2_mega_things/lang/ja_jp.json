@@ -1,5 +1,5 @@
 {
-    "chat.ae2_mega_things.OnlyEmptyDISKsCanBeDisassembled": "分解ができるのは空のDISKのみです。",
+    "chat.ae2_mega_things.OnlyEmptyDISKsCanBeDisassembled": "空のDISKドライブのみが分解できます。",
     "chat.ae2_mega_things.UnknownDISKDrive": "不明なDISKドライブ '[%s]'",
     "item.ae2_mega_things.chemical_disk_drive_16k": "16k ME化学物質DISKドライブ",
     "item.ae2_mega_things.chemical_disk_drive_16m": "16M MEGA化学物質DISKドライブ",

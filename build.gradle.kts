@@ -1,3 +1,4 @@
+import org.apache.tools.ant.filters.ReplaceTokens
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -104,10 +105,6 @@ repositories {
         url = uri("https://modmaven.dev/")
     }
     maven {
-        name = "Cloth Config"
-        url = uri("https://maven.shedaniel.me/")
-    }
-    maven {
         name = "Curse Maven"
         url = uri("https://cursemaven.com")
     }
@@ -124,7 +121,6 @@ dependencies {
 
     localRuntime(libs.jei)
     localRuntime(variantOf(libs.mekanism, "all"))
-    localRuntime(libs.clothConfig)
     if (loadAppMek) {
         localRuntime(libs.appmek)
     }
@@ -181,7 +177,7 @@ tasks {
         )
 
         filesMatching(listOf("pack.mcmeta", "META-INF/neoforge.mods.toml", "*.mixins.json")) {
-            expand(prop)
+            filter<ReplaceTokens>("beginToken" to "\${", "endToken" to "}", "tokens" to prop)
         }
         inputs.properties(prop)
     }
@@ -217,7 +213,7 @@ tasks {
 
 idea {
     module {
-        this.isDownloadJavadoc = true
-        this.isDownloadJavadoc = true
+        isDownloadJavadoc = true
+        isDownloadSources = true
     }
 }

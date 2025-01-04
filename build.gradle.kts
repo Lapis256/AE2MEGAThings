@@ -241,4 +241,15 @@ tasks {
             rename { "LICENSE_${Constants.Mod.id}" }
         }
     }
+
+    named<Wrapper>("wrapper").configure {
+        distributionType = Wrapper.DistributionType.BIN
+    }
+}
+
+idea {
+    module {
+        isDownloadJavadoc = true
+        isDownloadSources = true
+    }
 }

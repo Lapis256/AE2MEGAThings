@@ -1,3 +1,4 @@
+import org.apache.tools.ant.filters.ReplaceTokens
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -8,14 +9,12 @@ plugins {
 
     alias(libs.plugins.kotlin)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.forge)
-    alias(libs.plugins.mixin)
-    alias(libs.plugins.parchmentmc)
+    alias(libs.plugins.moddev)
 }
 
 val modId = Constants.Mod.id
-val minecraftVersion: String = libs.versions.minecraft.get()
-val forgeMajorVersion: String = extractVersionSegments(libs.versions.forge)
+val mcVersion: String = libs.versions.minecraft.get()
+val forgeVersion: String = libs.versions.forge.get()
 val kffVersion: String = libs.versions.kotlinForForge.get()
 val jdkVersion = 17
 
@@ -23,7 +22,7 @@ val exportMixin = true
 val loadAppMek = true
 
 base {
-    archivesName = "${project.name}-$minecraftVersion"
+    archivesName = "${project.name}-$mcVersion"
     version = Constants.Mod.version
     group = Constants.Mod.group
 }
@@ -37,61 +36,63 @@ sourceSets {
     }
 }
 
-minecraft {
-    mappings("parchment", "${libs.versions.parchmentmc.get()}-$minecraftVersion")
+legacyForge {
+    version = "$mcVersion-$forgeVersion"
 
-    copyIdeResources = true
+    validateAccessTransformers = true
 
     file("src/main/resources/META-INF/accesstransformer.cfg").takeIf(File::exists)?.let {
         println("Adding access transformer: $it")
-        accessTransformer(it)
+        setAccessTransformers(it)
+    }
+
+    parchment {
+        mappingsVersion = libs.versions.parchmentmc.get()
+        minecraftVersion = mcVersion
     }
 
     runs {
-        configureEach {
-            ideaModule("${rootProject.name}.${project.name}.main")
-
-            properties(
-                mapOf(
-                    "forge.logging.markers" to "REGISTRIES", "forge.logging.console.level" to "debug"
-                )
-            )
-
-            jvmArgs(
-                "-XX:+AllowEnhancedClassRedefinition", "-Dmixin.debug.export=$exportMixin"
-            )
-
-            mods {
-                create(modId) {
-                    source(sourceSets["main"])
-                }
-            }
-        }
-
         create("client") {
-            taskName("Forge Client")
-
-            workingDirectory(project.file("run"))
-
-            property("forge.enabledGameTestNamespaces", modId)
+            client()
+            gameDirectory.dir("run")
+            systemProperty("neoforge.enabledGameTestNamespaces", modId)
+            jvmArgument("-Dmixin.debug.export=$exportMixin")
         }
 
         create("server") {
-            taskName("Forge Server")
-
-            workingDirectory(project.file("run-server"))
-
-            property("forge.enabledGameTestNamespaces", modId)
+            server()
+            gameDirectory.dir("run-server")
+            programArgument("--nogui")
+            systemProperty("neoforge.enabledGameTestNamespaces", modId)
+            jvmArgument("-Dmixin.debug.export=$exportMixin")
         }
 
         create("data") {
-            taskName("Generate Data")
-
-            workingDirectory(project.file("run-data"))
-
-            args(
-                "--mod", modId, "--all", "--output", file("src/generated/resources/"), "--existing", file("src/main/resources/")
+            data()
+            gameDirectory.dir("run-data")
+            programArguments.addAll(
+                "--mod",
+                modId,
+                "--all",
+                "--output",
+                file("src/generated/resources/").absolutePath,
+                "--existing",
+                file("src/main/resources/").absolutePath
             )
+        }
+
+        configureEach {
+            systemProperty("forge.logging.markers", "REGISTRIES")
+
+            jvmArgument("-XX:+AllowEnhancedClassRedefinition")
+
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        create(modId) {
+            sourceSet(sourceSets["main"])
         }
     }
 }
@@ -127,20 +128,18 @@ repositories {
 }
 
 dependencies {
-    minecraft(libs.minecraftForge)
-
     implementation(libs.kotlinForForge)
-    implementation(deobf(libs.ae2))
-    implementation(deobf(libs.megacells))
-    implementation(deobf(libs.ae2things))
+    modImplementation(libs.ae2)
+    modImplementation(libs.megacells)
+    modImplementation(libs.ae2things)
 
-    compileOnly(deobf(variantOf(libs.mekanism, "api")))
-    compileOnly(deobf(libs.appmek))
+    modCompileOnly(variantOf(libs.mekanism, "api"))
+    modCompileOnly(libs.appmek)
 
-    runtimeOnly(deobf(libs.jei))
-    runtimeOnly(deobf(variantOf(libs.mekanism, "all")))
+    modRuntimeOnly(libs.jei)
+    modRuntimeOnly(variantOf(libs.mekanism, "all"))
     if (loadAppMek) {
-        runtimeOnly(deobf(libs.appmek))
+        modRuntimeOnly(libs.appmek)
     }
 
     annotationProcessor(variantOf(libs.mixin, "processor"))
@@ -149,16 +148,20 @@ dependencies {
         compileOnly(it)
     }
     libs.mixinExtrasForge.let {
-        jarJar(it) {
-            jarJar.ranged(this, "[${it.get().version},)")
+        jarJar(variantOf(it, "slim")) {
+            version {
+                val version = it.get().version.toString()
+                strictly("[$version,)")
+                prefer(version)
+            }
         }
         implementation(it)
     }
 }
 
 val modDependencies = buildDeps(
-    ModDep("forge", forgeMajorVersion),
-    ModDep("minecraft", minecraftVersion),
+    ModDep("forge", extractVersionSegments(forgeVersion)),
+    ModDep("minecraft", mcVersion),
     ModDep("kotlinforforge", kffVersion),
     ModDep("ae2", extractVersionSegments(libs.versions.ae2)),
     ModDep("megacells", "1.4", ordering = Order.AFTER),
@@ -192,7 +195,7 @@ tasks {
         val prop = mapOf(
             "version" to version,
             "group" to project.group,
-            "minecraft_version" to minecraftVersion,
+            "minecraft_version" to mcVersion,
             "mod_loader" to "kotlinforforge",
             "mod_loader_version_range" to "[$kffVersion,)",
             "mod_name" to Constants.Mod.name,
@@ -207,7 +210,7 @@ tasks {
         )
 
         filesMatching(listOf("pack.mcmeta", "META-INF/mods.toml", "*.mixins.json")) {
-            expand(prop)
+            filter<ReplaceTokens>("beginToken" to "\${", "endToken" to "}", "tokens" to prop)
         }
         inputs.properties(prop)
     }
@@ -224,12 +227,12 @@ tasks {
                 "Implementation-Timestamp" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(Date()),
                 "Timestamp" to System.currentTimeMillis(),
                 "Built-On-Java" to "${System.getProperty("java.vm.version")} (${System.getProperty("java.vm.vendor")})",
-                "Built-On-Minecraft" to minecraftVersion,
+                "Built-On-Minecraft" to mcVersion,
                 "FMLAT" to "accesstransformer.cfg",
+                "MixinConfigs" to "${modId}.mixins.json"
             )
         }
 
-        finalizedBy("reobfJar")
     }
 
     named<Jar>("sourcesJar") {
@@ -237,6 +240,15 @@ tasks {
             rename { "LICENSE_${Constants.Mod.id}" }
         }
     }
+
+    named<Wrapper>("wrapper").configure {
+        distributionType = Wrapper.DistributionType.BIN
+    }
 }
 
-fun deobf(dependency: Provider<MinimalExternalModuleDependency>) = fg.deobf(dependency.get())
+idea {
+    module {
+        isDownloadJavadoc = true
+        isDownloadSources = true
+    }
+}

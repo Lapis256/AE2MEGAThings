@@ -1,14 +1,11 @@
 [versions]
 plugin_kotlin = "1.8.21"
-plugin_mixin = "0.7.+"
-plugin_forge = "6.0.+"
-plugin_parchmentmc = "1.+"
+plugin_moddev = "2.0.+"
 
 
 minecraft = "1.18.2"
-minecraftForge = "1.18.2-40.2.0"
+forge = "40.3.0"
 kotlinForForge = "3.12.0"
-forge = " 40.2.0"
 parchmentmc = "2022.11.06"
 mixin = "0.8.5"
 mixinExtras = "0.5.0-beta.4"
@@ -22,7 +19,6 @@ ae2things = "4948360"
 
 
 [libraries]
-minecraftForge = { module = "net.minecraftforge:forge", version.ref = "minecraftForge" }
 kotlinForForge = { module = "thedarkcolour:kotlinforforge", version.ref = "kotlinForForge" }
 mixin = { module = "org.spongepowered:mixin", version.ref = "mixin" }
 mixinExtrasCommon = { module = "io.github.llamalad7:mixinextras-common", version.ref = "mixinExtras" }
@@ -39,6 +35,4 @@ ae2things = { module = "curse.maven:ae2-things-forge-609977", version.ref = "ae2
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "plugin_kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "plugin_kotlin" }
-mixin = { id = "org.spongepowered.mixin", version.ref = "plugin_mixin" }
-forge = { id = "net.minecraftforge.gradle", version.ref = "plugin_forge" }
-parchmentmc = { id = "org.parchmentmc.librarian.forgegradle", version.ref = "plugin_parchmentmc" }
+moddev = { id = "net.neoforged.moddev.legacyforge", version.ref = "plugin_moddev" }

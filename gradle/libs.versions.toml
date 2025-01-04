@@ -1,5 +1,5 @@
 [versions]
-plugin_neoforge = "1.0.+"
+plugin_moddev = "2.0.+"
 plugin_kotlin = "2.0.21"
 
 
@@ -32,4 +32,4 @@ clothConfig = { module = "me.shedaniel.cloth:cloth-config-neoforge", version.ref
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "plugin_kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "plugin_kotlin" }
-neoforge = { id = "net.neoforged.moddev", version.ref = "plugin_neoforge" }
+moddev = { id = "net.neoforged.moddev", version.ref = "plugin_moddev" }

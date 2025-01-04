@@ -10,7 +10,7 @@ plugins {
 
     alias(libs.plugins.kotlin)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.neoforge)
+    alias(libs.plugins.moddev)
 }
 
 val kffVersion: String = extractVersionSegments(libs.versions.kotlinForForge)
@@ -212,5 +212,12 @@ tasks {
 
     named<Wrapper>("wrapper").configure {
         distributionType = Wrapper.DistributionType.BIN
+    }
+}
+
+idea {
+    module {
+        this.isDownloadJavadoc = true
+        this.isDownloadJavadoc = true
     }
 }

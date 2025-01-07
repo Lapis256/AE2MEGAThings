@@ -1,6 +1,6 @@
 [versions]
-plugin_moddev = "2.0.+"
 plugin_kotlin = "2.0.21"
+plugin_moddev = "2.0.+"
 
 
 minecraft = "1.21.1"

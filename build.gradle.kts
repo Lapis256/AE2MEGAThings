@@ -14,16 +14,16 @@ plugins {
     alias(libs.plugins.moddev)
 }
 
-val kffVersion: String = extractVersionSegments(libs.versions.kotlinForForge)
 val modId = Constants.Mod.id
-val minecraftVersion: String = libs.versions.minecraft.get()
+val mcVersion: String = libs.versions.minecraft.get()
+val kffVersion: String = libs.versions.kotlinForForge.get()
 val jdkVersion = 21
 
 val exportMixin = true
 val loadAppMek = true
 
 base {
-    archivesName = "${project.name}-$minecraftVersion"
+    archivesName = "${project.name}-$mcVersion"
     version = Constants.Mod.version
     group = Constants.Mod.group
 }
@@ -40,6 +40,8 @@ sourceSets {
 neoForge {
     version = libs.versions.neoforge.get()
 
+    validateAccessTransformers = true
+
     file("src/main/resources/META-INF/accesstransformer.cfg").takeIf(File::exists)?.let {
         println("Adding access transformer: $it")
         setAccessTransformers(it)
@@ -47,20 +49,20 @@ neoForge {
 
     parchment {
         mappingsVersion = libs.versions.parchmentmc.get()
-        minecraftVersion = extractVersionSegments(libs.versions.minecraft, 2)
+        minecraftVersion = mcVersion
     }
 
     runs {
         create("client") {
             client()
-            gameDirectory.dir("run")
+            gameDirectory.set(file("run"))
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
             jvmArgument("-Dmixin.debug.export=$exportMixin")
         }
 
         create("server") {
             server()
-            gameDirectory.dir("run-server")
+            gameDirectory.set(file("run-server"))
             programArgument("--nogui")
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
             jvmArgument("-Dmixin.debug.export=$exportMixin")
@@ -68,7 +70,7 @@ neoForge {
 
         create("data") {
             data()
-            gameDirectory.dir("run-data")
+            gameDirectory.set(file("run-data"))
             programArguments.addAll(
                 "--mod",
                 modId,
@@ -82,6 +84,8 @@ neoForge {
 
         configureEach {
             systemProperty("forge.logging.markers", "REGISTRIES")
+
+            jvmArgument("-XX:+AllowEnhancedClassRedefinition")
 
             logLevel = org.slf4j.event.Level.DEBUG
         }
@@ -128,7 +132,7 @@ dependencies {
 
 val modDependencies = buildDeps(
     ModDep("neoforge", extractVersionSegments(libs.versions.neoforge, 2)),
-    ModDep("minecraft", minecraftVersion),
+    ModDep("minecraft", mcVersion),
     ModDep("kotlinforforge", kffVersion),
     ModDep("ae2", "19.0.20-beta", ordering = Order.AFTER),
     ModDep("megacells", "2.1", ordering = Order.AFTER),
@@ -162,7 +166,7 @@ tasks {
         val prop = mapOf(
             "version" to version,
             "group" to project.group,
-            "minecraft_version" to minecraftVersion,
+            "minecraft_version" to mcVersion,
             "mod_loader" to "kotlinforforge",
             "mod_loader_version_range" to "[$kffVersion,)",
             "mod_name" to Constants.Mod.name,
@@ -194,7 +198,7 @@ tasks {
                 "Implementation-Timestamp" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(Date()),
                 "Timestamp" to System.currentTimeMillis(),
                 "Built-On-Java" to "${System.getProperty("java.vm.version")} (${System.getProperty("java.vm.vendor")})",
-                "Built-On-Minecraft" to minecraftVersion,
+                "Built-On-Minecraft" to mcVersion,
                 "FMLAT" to "accesstransformer.cfg",
             )
         }

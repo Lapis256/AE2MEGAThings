@@ -8,7 +8,7 @@ forge = "47.3.7"
 kotlinForForge = "4.11.0"
 parchmentmc = "2023.09.03"
 mixin = "0.8.5"
-mixinExtras = "0.5.0-beta.4"
+mixinExtras = "0.4.1"
 
 jei = "15.12.3.55"
 ae2 = "15.2.13"

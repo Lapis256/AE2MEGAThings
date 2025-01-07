@@ -54,14 +54,14 @@ legacyForge {
     runs {
         create("client") {
             client()
-            gameDirectory.dir("run")
+            gameDirectory.set(file("run"))
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
             jvmArgument("-Dmixin.debug.export=$exportMixin")
         }
 
         create("server") {
             server()
-            gameDirectory.dir("run-server")
+            gameDirectory.set(file("run-server"))
             programArgument("--nogui")
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
             jvmArgument("-Dmixin.debug.export=$exportMixin")
@@ -69,7 +69,7 @@ legacyForge {
 
         create("data") {
             data()
-            gameDirectory.dir("run-data")
+            gameDirectory.set(file("run-data"))
             programArguments.addAll(
                 "--mod",
                 modId,

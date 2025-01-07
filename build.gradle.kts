@@ -54,14 +54,14 @@ legacyForge {
     runs {
         create("client") {
             client()
-            gameDirectory.dir("run")
+            gameDirectory.set(file("run"))
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
             jvmArgument("-Dmixin.debug.export=$exportMixin")
         }
 
         create("server") {
             server()
-            gameDirectory.dir("run-server")
+            gameDirectory.set(file("run-server"))
             programArgument("--nogui")
             systemProperty("neoforge.enabledGameTestNamespaces", modId)
             jvmArgument("-Dmixin.debug.export=$exportMixin")
@@ -69,7 +69,7 @@ legacyForge {
 
         create("data") {
             data()
-            gameDirectory.dir("run-data")
+            gameDirectory.set(file("run-data"))
             programArguments.addAll(
                 "--mod",
                 modId,
@@ -148,7 +148,7 @@ dependencies {
         compileOnly(it)
     }
     libs.mixinExtrasForge.let {
-        jarJar(variantOf(it, "slim")) {
+        jarJar(it) {
             version {
                 val version = it.get().version.toString()
                 strictly("[$version,)")
@@ -163,10 +163,10 @@ val modDependencies = buildDeps(
     ModDep("forge", extractVersionSegments(forgeVersion)),
     ModDep("minecraft", mcVersion),
     ModDep("kotlinforforge", kffVersion),
-    ModDep("ae2", extractVersionSegments(libs.versions.ae2)),
+    ModDep("ae2", extractVersionSegments(libs.versions.ae2), ordering = Order.AFTER),
     ModDep("megacells", "1.4", ordering = Order.AFTER),
-    ModDep("ae2things", "1.0"),
-    ModDep("appmek", "1.2", mandatory = false),
+    ModDep("ae2things", "1.0", ordering = Order.AFTER),
+    ModDep("appmek", "1.2", mandatory = false, ordering = Order.AFTER),
 )
 
 tasks {

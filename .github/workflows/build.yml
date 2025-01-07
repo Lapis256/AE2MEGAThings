@@ -1,0 +1,38 @@
+name: Build
+
+on:
+  - pull_request
+  - push
+  - workflow_dispatch
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+
+      - name: Build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+
+      - name: Upload Jars
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: |
+            build/libs/*.jar

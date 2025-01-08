@@ -85,8 +85,6 @@ neoForge {
         configureEach {
             systemProperty("forge.logging.markers", "REGISTRIES")
 
-            jvmArgument("-XX:+AllowEnhancedClassRedefinition")
-
             logLevel = org.slf4j.event.Level.DEBUG
         }
     }
@@ -150,7 +148,6 @@ tasks {
         withSourcesJar()
         toolchain {
             languageVersion = JavaLanguageVersion.of(jdkVersion)
-            vendor = JvmVendorSpec.JETBRAINS
         }
         JavaVersion.toVersion(jdkVersion).let {
             sourceCompatibility = it

@@ -149,7 +149,7 @@ dependencies {
         compileOnly(it)
     }
     libs.mixinExtrasForge.let {
-        jarJar(variantOf(it, "slim")) {
+        jarJar(it) {
             version {
                 val version = it.get().version.toString()
                 strictly("[$version,)")

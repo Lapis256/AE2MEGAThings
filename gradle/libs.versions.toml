@@ -1,6 +1,7 @@
 [versions]
 plugin_kotlin = "1.8.21"
 plugin_moddev = "2.0.+"
+plugin_modPublisher = "2.1.+"
 
 
 minecraft = "1.18.2"
@@ -36,3 +37,4 @@ ae2things = { module = "curse.maven:ae2-things-forge-609977", version.ref = "ae2
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "plugin_kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "plugin_kotlin" }
 moddev = { id = "net.neoforged.moddev.legacyforge", version.ref = "plugin_moddev" }
+modPublisher = { id = "com.hypherionmc.modutils.modpublisher", version.ref = "plugin_modPublisher" }

@@ -10,4 +10,9 @@ object Constants {
         const val repositoryUrl = "https://github.com/Lapis256/AE2MEGAThings"
         const val issueTrackerUrl = "$repositoryUrl/issues"
     }
+
+    object Publisher {
+        const val curseforgeProjectId = "1150075"
+        const val modrinthProjectId = "hoge"
+    }
 }

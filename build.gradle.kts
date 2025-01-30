@@ -27,15 +27,6 @@ base {
     group = Constants.Mod.group
 }
 
-sourceSets {
-    main {
-        resources {
-            srcDir("src/generated/resources")
-            exclude("**/.cache")
-        }
-    }
-}
-
 legacyForge {
     version = "$mcVersion-$forgeVersion"
 
@@ -55,7 +46,7 @@ legacyForge {
         create("client") {
             client()
             gameDirectory.set(file("run"))
-            systemProperty("neoforge.enabledGameTestNamespaces", modId)
+            systemProperty("forge.enabledGameTestNamespaces", modId)
             jvmArgument("-Dmixin.debug.export=$exportMixin")
         }
 
@@ -63,7 +54,7 @@ legacyForge {
             server()
             gameDirectory.set(file("run-server"))
             programArgument("--nogui")
-            systemProperty("neoforge.enabledGameTestNamespaces", modId)
+            systemProperty("forge.enabledGameTestNamespaces", modId)
             jvmArgument("-Dmixin.debug.export=$exportMixin")
         }
 
@@ -137,7 +128,9 @@ dependencies {
     modCompileOnly(libs.appmek)
 
     modRuntimeOnly(libs.jei)
-    modRuntimeOnly(variantOf(libs.mekanism, "all"))
+    modRuntimeOnly(libs.mekanism)
+    // modRuntimeOnly(variantOf(libs.mekanism, "generators"))
+    modRuntimeOnly("curse.maven:mekanism-generators-268566:6123081")
     modRuntimeOnly(libs.clothConfig)
     if (loadAppMek) {
         modRuntimeOnly(libs.appmek)
@@ -170,6 +163,31 @@ val modDependencies = buildDeps(
     ModDep("appmek", "1.4", mandatory = false, ordering = Order.AFTER),
 )
 
+val generateModMetadata by tasks.registering(ProcessResources::class) {
+    val replaceProperties = mapOf(
+        "version" to version,
+        "group" to project.group,
+        "minecraft_version" to mcVersion,
+        "mod_loader" to "kotlinforforge",
+        "mod_loader_version_range" to "[$kffVersion,)",
+        "mod_name" to Constants.Mod.name,
+        "mod_author" to Constants.Mod.author,
+        "mod_id" to modId,
+        "license" to Constants.Mod.license,
+        "description" to Constants.Mod.description,
+        "display_url" to Constants.Mod.repositoryUrl,
+        "issue_tracker_url" to Constants.Mod.issueTrackerUrl,
+
+        "dependencies" to modDependencies
+    )
+
+    inputs.properties(replaceProperties)
+    filter<ReplaceTokens>("beginToken" to "\${", "endToken" to "}", "tokens" to replaceProperties)
+    from("src/main/templates")
+    into("build/generated/sources/modMetadata")
+    rename("template(\\..+)?.mixins.json", "${modId}$1.mixins.json")
+}
+
 tasks {
     withType<JavaCompile> {
         options.encoding = "UTF-8"
@@ -192,28 +210,7 @@ tasks {
         from(rootProject.file("LICENSE")) {
             rename { "LICENSE_${Constants.Mod.id}" }
         }
-
-        val prop = mapOf(
-            "version" to version,
-            "group" to project.group,
-            "minecraft_version" to mcVersion,
-            "mod_loader" to "kotlinforforge",
-            "mod_loader_version_range" to "[$kffVersion,)",
-            "mod_name" to Constants.Mod.name,
-            "mod_author" to Constants.Mod.author,
-            "mod_id" to Constants.Mod.id,
-            "license" to Constants.Mod.license,
-            "description" to Constants.Mod.description,
-            "display_url" to Constants.Mod.repositoryUrl,
-            "issue_tracker_url" to Constants.Mod.issueTrackerUrl,
-
-            "dependencies" to modDependencies
-        )
-
-        filesMatching(listOf("pack.mcmeta", "META-INF/mods.toml", "*.mixins.json")) {
-            filter<ReplaceTokens>("beginToken" to "\${", "endToken" to "}", "tokens" to prop)
-        }
-        inputs.properties(prop)
+        dependsOn(generateModMetadata)
     }
 
     jar {
@@ -229,11 +226,9 @@ tasks {
                 "Timestamp" to System.currentTimeMillis(),
                 "Built-On-Java" to "${System.getProperty("java.vm.version")} (${System.getProperty("java.vm.vendor")})",
                 "Built-On-Minecraft" to mcVersion,
-                "FMLAT" to "accesstransformer.cfg",
                 "MixinConfigs" to "${modId}.mixins.json"
             )
         }
-
     }
 
     named<Jar>("sourcesJar") {
@@ -247,9 +242,25 @@ tasks {
     }
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs(
+                "src/generated/resources",
+                generateModMetadata.get().outputs.files
+            )
+            exclude("**/.cache")
+        }
+    }
+}
+
+legacyForge.ideSyncTask(generateModMetadata)
+
 idea {
     module {
         isDownloadJavadoc = true
         isDownloadSources = true
+
+        resourceDirs.add(file("src/main/templates"))
     }
 }

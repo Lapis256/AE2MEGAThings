@@ -76,8 +76,6 @@ neoForge {
         configureEach {
             systemProperty("forge.logging.markers", "REGISTRIES")
 
-            jvmArgument("-XX:+AllowEnhancedClassRedefinition")
-
             logLevel = org.slf4j.event.Level.DEBUG
         }
     }
@@ -228,7 +226,5 @@ idea {
     module {
         isDownloadJavadoc = true
         isDownloadSources = true
-
-        resourceDirs.add(file("src/main/templates"))
     }
 }

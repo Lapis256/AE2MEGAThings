@@ -44,7 +44,7 @@ jobs:
         env:
           CHANGELOG: ${{ github.event.release.body }}
           PUBLISHER_DEBUG: false
-          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          CURSE_TOKEN: ${{ secrets.CURSE_TOKEN }}
         # MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
         run: ./gradlew publishMod
 

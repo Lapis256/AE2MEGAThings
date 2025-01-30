@@ -307,10 +307,12 @@ publisher {
     artifact.set(tasks.jar)
 
     curseDepends {
-        fromModDependencies(modDependencies)
+        required("applied-energistics-2", "ae2-things-forge", "mega-cells", "kotlin-for-forge")
+        optional("applied-mekanistics")
     }
 
-    modrinthDepends {
-        fromModDependencies(modDependencies)
-    }
+//    modrinthDepends {
+//        required("applied-energistics-2", "ae2-things-forge", "mega-cells", "kotlin-for-forge")
+//        optional("applied-mekanistics")
+//    }
 }

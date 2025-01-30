@@ -1,13 +1,12 @@
-name: Build
+name: Release
+
+permissions:
+  contents: write
 
 on:
-  - pull_request
-  - push
-  - workflow_dispatch
-
-concurrency:
-  group: ${{ github.ref }}
-  cancel-in-progress: true
+  release:
+    types:
+      - published
 
 jobs:
   build:
@@ -39,4 +38,20 @@ jobs:
         with:
           name: build
           path: |
+            build/libs/*.jar
+
+      - name: Publish
+        env:
+          CHANGELOG: ${{ github.event.release.body }}
+          PUBLISHER_DEBUG: false
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+        # MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+        run: ./gradlew publishMod
+
+      - name: Upload to GitHub Releases
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: |
             build/libs/*.jar

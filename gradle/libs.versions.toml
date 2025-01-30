@@ -1,6 +1,7 @@
 [versions]
 plugin_kotlin = "2.0.0"
 plugin_moddev = "2.0.+"
+plugin_modPublisher = "2.1.+"
 
 
 minecraft = "1.20.1"
@@ -38,3 +39,4 @@ clothConfig = { module = "me.shedaniel.cloth:cloth-config-forge", version.ref = 
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "plugin_kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "plugin_kotlin" }
 moddev = { id = "net.neoforged.moddev.legacyforge", version.ref = "plugin_moddev" }
+modPublisher = { id = "com.hypherionmc.modutils.modpublisher", version.ref = "plugin_modPublisher" }

@@ -1,3 +1,7 @@
+import com.hypherionmc.modpublisher.plugin.ModPublisherGradleExtension
+import com.hypherionmc.modpublisher.properties.CurseEnvironment
+import com.hypherionmc.modpublisher.properties.ModLoader
+import com.hypherionmc.modpublisher.properties.ReleaseType
 import org.apache.tools.ant.filters.ReplaceTokens
 import java.text.SimpleDateFormat
 import java.util.*
@@ -10,6 +14,7 @@ plugins {
     alias(libs.plugins.kotlin)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.moddev)
+    alias(libs.plugins.modPublisher)
 }
 
 val modId = Constants.Mod.id
@@ -153,7 +158,7 @@ dependencies {
     }
 }
 
-val modDependencies = buildDeps(
+val modDependencies = listOf(
     ModDep("forge", extractVersionSegments(forgeVersion)),
     ModDep("minecraft", mcVersion),
     ModDep("kotlinforforge", kffVersion),
@@ -178,7 +183,7 @@ val generateModMetadata by tasks.registering(ProcessResources::class) {
         "display_url" to Constants.Mod.repositoryUrl,
         "issue_tracker_url" to Constants.Mod.issueTrackerUrl,
 
-        "dependencies" to modDependencies
+        "dependencies" to buildDeps(*modDependencies.toTypedArray())
     )
 
     inputs.properties(replaceProperties)
@@ -240,6 +245,10 @@ tasks {
     named<Wrapper>("wrapper").configure {
         distributionType = Wrapper.DistributionType.BIN
     }
+
+    named { it.startsWith("publish") }.forEach {
+        it.notCompatibleWithConfigurationCache("ModPublisher plugin is not compatible with configuration cache")
+    }
 }
 
 sourceSets {
@@ -262,5 +271,46 @@ idea {
         isDownloadSources = true
 
         resourceDirs.add(file("src/main/templates"))
+    }
+}
+
+fun ModPublisherGradleExtension.Dependencies.fromModDependencies(modDependencies: List<ModDep>) {
+    modDependencies.filter {
+        it.id != "minecraft" && it.id != "forge"
+    }.forEach {
+        if (it.mandatory) {
+            required(it.id)
+        } else {
+            optional(it.id)
+        }
+    }
+}
+
+publisher {
+    apiKeys {
+        curseforge(System.getenv("CURSE_TOKEN"))
+//        modrinth(System.getenv("MODRINTH_TOKEN"))
+    }
+
+    setReleaseType(ReleaseType.RELEASE)
+    setLoaders(ModLoader.FORGE)
+    setCurseEnvironment(CurseEnvironment.BOTH)
+
+    debug.set(System.getenv("PUBLISHER_DEBUG") == "true")
+    curseID.set(Constants.Publisher.curseforgeProjectId)
+//    modrinthID.set(Constants.Publisher.modrinthProjectId)
+    changelog.set(System.getenv("CHANGELOG") ?: "No changelog provided")
+    projectVersion.set("${project.version}")
+    displayName.set("[$mcVersion] v${project.version}")
+    setGameVersions(mcVersion)
+    setJavaVersions(jdkVersion)
+    artifact.set(tasks.jar)
+
+    curseDepends {
+        fromModDependencies(modDependencies)
+    }
+
+    modrinthDepends {
+        fromModDependencies(modDependencies)
     }
 }

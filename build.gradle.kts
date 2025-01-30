@@ -28,15 +28,6 @@ base {
     group = Constants.Mod.group
 }
 
-sourceSets {
-    main {
-        resources {
-            srcDir("src/generated/resources")
-            exclude("**/.cache")
-        }
-    }
-}
-
 neoForge {
     version = libs.versions.neoforge.get()
 
@@ -85,6 +76,8 @@ neoForge {
         configureEach {
             systemProperty("forge.logging.markers", "REGISTRIES")
 
+            jvmArgument("-XX:+AllowEnhancedClassRedefinition")
+
             logLevel = org.slf4j.event.Level.DEBUG
         }
     }
@@ -122,7 +115,9 @@ dependencies {
     compileOnly(libs.appmek)
 
     localRuntime(libs.jei)
-    localRuntime(variantOf(libs.mekanism, "all"))
+    localRuntime(libs.mekanism)
+    // localRuntime(variantOf(libs.mekanism, "generators"))
+    localRuntime("curse.maven:mekanism-generators-268566:6018309")
     if (loadAppMek) {
         localRuntime(libs.appmek)
     }
@@ -137,6 +132,31 @@ val modDependencies = buildDeps(
     ModDep("ae2things", "1.2", ordering = Order.AFTER),
     ModDep("appmek", "1.4", ordering = Order.AFTER, type = DependencyType.OPTIONAL),
 )
+
+val generateModMetadata by tasks.registering(ProcessResources::class) {
+    val replaceProperties = mapOf(
+        "version" to version,
+        "group" to project.group,
+        "minecraft_version" to mcVersion,
+        "mod_loader" to "kotlinforforge",
+        "mod_loader_version_range" to "[$kffVersion,)",
+        "mod_name" to Constants.Mod.name,
+        "mod_author" to Constants.Mod.author,
+        "mod_id" to modId,
+        "license" to Constants.Mod.license,
+        "description" to Constants.Mod.description,
+        "display_url" to Constants.Mod.repositoryUrl,
+        "issue_tracker_url" to Constants.Mod.issueTrackerUrl,
+
+        "dependencies" to modDependencies
+    )
+
+    inputs.properties(replaceProperties)
+    filter<ReplaceTokens>("beginToken" to "\${", "endToken" to "}", "tokens" to replaceProperties)
+    from("src/main/templates")
+    into("build/generated/sources/modMetadata")
+    rename("template(\\..+)?.mixins.json", "${modId}$1.mixins.json")
+}
 
 tasks {
     withType<JavaCompile> {
@@ -159,28 +179,7 @@ tasks {
         from(rootProject.file("LICENSE")) {
             rename { "LICENSE_${Constants.Mod.id}" }
         }
-
-        val prop = mapOf(
-            "version" to version,
-            "group" to project.group,
-            "minecraft_version" to mcVersion,
-            "mod_loader" to "kotlinforforge",
-            "mod_loader_version_range" to "[$kffVersion,)",
-            "mod_name" to Constants.Mod.name,
-            "mod_author" to Constants.Mod.author,
-            "mod_id" to Constants.Mod.id,
-            "license" to Constants.Mod.license,
-            "description" to Constants.Mod.description,
-            "display_url" to Constants.Mod.repositoryUrl,
-            "issue_tracker_url" to Constants.Mod.issueTrackerUrl,
-
-            "dependencies" to modDependencies
-        )
-
-        filesMatching(listOf("pack.mcmeta", "META-INF/neoforge.mods.toml", "*.mixins.json")) {
-            filter<ReplaceTokens>("beginToken" to "\${", "endToken" to "}", "tokens" to prop)
-        }
-        inputs.properties(prop)
+        dependsOn(generateModMetadata)
     }
 
     jar {
@@ -196,7 +195,6 @@ tasks {
                 "Timestamp" to System.currentTimeMillis(),
                 "Built-On-Java" to "${System.getProperty("java.vm.version")} (${System.getProperty("java.vm.vendor")})",
                 "Built-On-Minecraft" to mcVersion,
-                "FMLAT" to "accesstransformer.cfg",
             )
         }
     }
@@ -212,9 +210,25 @@ tasks {
     }
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs(
+                "src/generated/resources",
+                generateModMetadata.get().outputs.files
+            )
+            exclude("**/.cache")
+        }
+    }
+}
+
+neoForge.ideSyncTask(generateModMetadata)
+
 idea {
     module {
         isDownloadJavadoc = true
         isDownloadSources = true
+
+        resourceDirs.add(file("src/main/templates"))
     }
 }

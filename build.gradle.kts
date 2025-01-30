@@ -304,7 +304,7 @@ publisher {
     displayName.set("[$mcVersion] v${project.version}")
     setGameVersions(mcVersion)
     setJavaVersions(jdkVersion)
-    artifact.set(tasks.jar)
+    artifact.set(tasks.named("reobfJar"))
 
     curseDepends {
         required("applied-energistics-2", "ae2-things-forge", "mega-cells", "kotlin-for-forge")

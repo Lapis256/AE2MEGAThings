@@ -1,9 +1,11 @@
 name: Build
 
 on:
-  - pull_request
-  - push
-  - workflow_dispatch
+  push:
+    tags-ignore:
+      - '**'
+  pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.ref }}

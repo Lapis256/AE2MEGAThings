@@ -247,7 +247,7 @@ publisher {
     }
 
     setReleaseType(ReleaseType.RELEASE)
-    setLoaders(ModLoader.FORGE)
+    setLoaders(ModLoader.NEOFORGE)
     setCurseEnvironment(CurseEnvironment.BOTH)
 
     debug.set(System.getenv("PUBLISHER_DEBUG") == "true")

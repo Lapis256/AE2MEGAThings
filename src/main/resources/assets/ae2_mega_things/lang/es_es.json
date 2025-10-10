@@ -1,6 +1,6 @@
 {
-  "chat.ae2_mega_things.OnlyEmptyDISKsCanBeDisassembled": "Solo las unidades de DISCO vacías pueden ser desensambladas.",
-  "chat.ae2_mega_things.UnknownDISKDrive": "Unidad de DISCO desconocida '[%s]'",
+  "chat.ae2_mega_things.OnlyEmptyDISKsCanBeDisassembled": "Solo las unidades de disco vacías pueden ser desensambladas.",
+  "chat.ae2_mega_things.UnknownDISKDrive": "Unidad de disco desconocida '[%s]'",
   "item.ae2_mega_things.chemical_disk_drive_16k": "Unidad de disco químico ME de 16k",
   "item.ae2_mega_things.chemical_disk_drive_16m": "Unidad de mega disco químico de 16M",
   "item.ae2_mega_things.chemical_disk_drive_1k": "Unidad de disco químico ME de 1k",
